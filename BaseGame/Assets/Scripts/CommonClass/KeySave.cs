@@ -8,4 +8,6 @@ public class KeySave
     // Daily Reward
 
     public const string DAILY_REWARD_DATA = "DAILY_REWARD_DATA";
+
+    public const string TIME_QUIT_GAME = "TIME_QUIT_GAME";
 }

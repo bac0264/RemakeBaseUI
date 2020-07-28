@@ -11,7 +11,7 @@ public class PlayerMoney
         Load();
     }
 
-    public bool Add(MoneyType id, long value)
+    public bool AddOne(MoneyType id, long value)
     {
         if (resourceDic.ContainsKey(id))
         {
@@ -28,7 +28,7 @@ public class PlayerMoney
             return true;
         }
     }
-    public bool Sub(MoneyType id, long value)
+    public bool SubOne(MoneyType id, long value)
     {
         if (resourceDic.ContainsKey(id))
         {
@@ -44,6 +44,43 @@ public class PlayerMoney
             Save();
             return true;
         }
+    }
+    public void AddManyMoney(List<Resource> dataList)
+    {
+        for (int i = 0; i < dataList.Count; i++)
+        {
+            MoneyType id = (MoneyType)dataList[i].ID;
+            long value = dataList[i].VALUE;
+            if (resourceDic.ContainsKey(id))
+            {
+                resourceDic[id].Add(dataList[i].VALUE);
+            }
+            else
+            {
+                Resource resource = new Resource((int)ResourceType.MONEY, (int)id, value);
+                resourceDic.Add(id, resource);
+                resourceList.AddData(resource);
+            }
+        }
+        Save();
+    }
+    public void SubManyMoney(List<Resource> dataList)
+    {
+        for (int i = 0; i < dataList.Count; i++)
+        {
+            MoneyType id = (MoneyType)dataList[i].ID;
+            if (resourceDic.ContainsKey(id))
+            {
+                resourceDic[id].Sub(dataList[i].VALUE);
+            }
+            else
+            {
+                Resource resource = new Resource((int)ResourceType.MONEY, (int)id, 0);
+                resourceDic.Add(id, resource);
+                resourceList.AddData(resource);
+            }
+        }
+        Save();
     }
     public Resource Get(MoneyType id, long value)
     {

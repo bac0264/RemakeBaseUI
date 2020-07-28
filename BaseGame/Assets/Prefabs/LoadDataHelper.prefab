@@ -43,5 +43,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 726889c81e3c7934cbc05725238cdb01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RewardDataTxt: {fileID: 4900000, guid: e2795552bda6b664eb61106f10303e49, type: 3}
-  rewardData: {fileID: 11400000, guid: 41cf25caf77d13a4ebff4b4011129b80, type: 2}

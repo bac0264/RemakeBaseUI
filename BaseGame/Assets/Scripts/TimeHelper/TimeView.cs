@@ -6,6 +6,9 @@ using System;
 public class TimeView : MonoBehaviour
 {
     [SerializeField] private Text timeTxt = null;
+    [SerializeField] private Image backGround = null;
+
+    
     private Action callBack;
     
     private void OnTime(bool check, long current)
@@ -20,9 +23,10 @@ public class TimeView : MonoBehaviour
         else timeTxt.gameObject.SetActive(false);
     }
     
-    public void StartTime(Action callBack)
+    public void StartTime(Action callBack, bool needBackGroud = false)
     {
         this.callBack = callBack;
+        backGround.gameObject.SetActive(needBackGroud);
         timeTxt.text = "";
         StartCoroutine(GetTime());
     }

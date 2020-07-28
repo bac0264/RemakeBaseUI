@@ -34,9 +34,9 @@ public class LoadResourceController
     {
         return LoadFromResource<DailyRewardDataCollection>(ResourcesConstant.SO_PATH, ResourcesConstant.FN_DAILY_REWARD);
     }
-    public static Sprite LoadResourceIconWithType(int type, int moneyType)
+    public static Sprite LoadIconWithMoneyType(int moneyType)
     {
-        return LoadFromResource<Sprite>(ResourcesConstant.ICON_PATH, string.Format(ResourcesConstant.FN_ICON_WITH_TYPE, type, moneyType));
+        return LoadFromResource<Sprite>(ResourcesConstant.ICON_PATH, string.Format(ResourcesConstant.FN_ICON_WITH_TYPE, moneyType));
     }
     #endregion
 }

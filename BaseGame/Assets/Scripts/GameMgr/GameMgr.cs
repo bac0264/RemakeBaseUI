@@ -17,6 +17,9 @@ public class GameMgr : MonoBehaviour
             DontDestroyOnLoad(this);
         }     
         else Destroy(this);
+    }
+    private void Start()
+    {
         InitDataPlayer();
     }
     public T InstantiateHelper<T>(T objectType) where T : Object

@@ -4,38 +4,33 @@ using UnityEngine;
 using UnityEngine.UI;
 public class UIDailyRewardElement : MonoBehaviour
 {
-    [SerializeField]
-    private Image backGround;
-    [SerializeField]
-    private Image icon;
-    [SerializeField]
-    private Text day;
-    [SerializeField]
-    private Text value;
-    [SerializeField]
-    private GameObject locked;
-    [SerializeField]
-    private GameObject opened;
-    [SerializeField]
-    private GameObject recieved;
+    [SerializeField] private Image backGround;
+    [SerializeField] private Image icon;
 
-    private Resource _resource;
+    [SerializeField] private Text day;
+    [SerializeField] private Text value;
+    [SerializeField] private Text nameTxt;
+
+    [SerializeField] private GameObject locked;
+    [SerializeField] private GameObject opened;
+    [SerializeField] private GameObject recieved;
+
+    public Resource Resource { set; get; }
     public void Init(Resource resource, DailyRewardElementData data)
     {
-        _resource = resource;
+        Resource = resource;
         //backGround.sprite = LoadResourceController.LoadBackgroundResource(_resource.TYPE, _resource.ID);
-        icon.sprite = LoadResourceController.LoadResourceIconWithType(_resource.TYPE, _resource.ID);
-        day.text = Localize.LocalizeWithKey("day") + " " + data.day;
+        icon.sprite = LoadResourceController.LoadIconWithMoneyType(Resource.ID);
+        day.text = data.day.ToString();
         value.text = resource.VALUE.ToString();
+        nameTxt.text = Localize.LocalizeWithKey("resource_" + Resource.ID);
 
-        locked.SetActive(!data.opened);
-        opened.SetActive(data.opened);
-        recieved.SetActive(data.recieved);
+        SetElementState(data);
     }
-    public void Refresh(DailyRewardElementData data)
+    public void SetElementState(DailyRewardElementData data)
     {
         locked.SetActive(!data.opened);
-        opened.SetActive(data.opened);
+        opened.SetActive(data.opened && !data.recieved);
         recieved.SetActive(data.recieved);
     }
 }

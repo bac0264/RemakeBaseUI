@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -39,11 +40,30 @@ public class TimeManager : MonoBehaviour
     }
     private void OnApplicationPause(bool pause)
     {
+        if (pause)
+        {
+            SaveTime();
+        }
     }
     private void OnApplicationQuit()
     {
+        SaveTime();
     }
-    public IEnumerator getTime(Action<bool, long> callBack)
+    public void SaveTime()
+    {
+        StartCoroutine(getTime(callBack2: SaveTime));
+    }
+    public void UpdateCurrentTime(Action<bool, long> callBack = null, Action<bool> callBack2 = null)
+    {
+        StartCoroutine(getTime(callBack, callBack2));
+    }
+    private void SaveTime(bool check)
+    {
+        if (check)
+            PlayerPrefs.SetString(KeySave.TIME_QUIT_GAME, PlayerPrefs.GetString(KeySave.TIME_QUIT_GAME));
+        PlayerPrefs.SetString(KeySave.TIME_QUIT_GAME, currentTime.TotalSecondTimeStamp().ToString());
+    }
+    public IEnumerator getTime(Action<bool, long> callBack = null, Action<bool> callBack2 = null)
     {
         UnityWebRequest www = UnityWebRequest.Get("https://www.microsoft.com");
         yield return www.SendWebRequest();
@@ -88,16 +108,25 @@ public class TimeManager : MonoBehaviour
         }
 
         callBack?.Invoke(check, currentTime.TotalSecondTimeStamp());
+        callBack2?.Invoke(check);
     }
     public void UpdateTime()
     {
-        StartCoroutine(getTime(null));
+        StartCoroutine(getTime());
     }
 }
 
 
 public static class TimeHelper
 {
+    public static bool IsNextDay(long lastTimeOnline, long currentTime)
+    {
+        DateTime lastTime = lastTimeOnline.NextMidNight();
+        long lastTimeSecond = lastTime.TotalSecondTimeStamp();
+        long rangeTime = currentTime - lastTimeSecond;
+        if (rangeTime < 0) return false;
+        return true;
+    }
     public static IEnumerator TimeCountDown(Text timeTxt, long currentTime, Action callBack)
     {
         long deadTime = currentTime.NextMidNightTimeStamp();
