@@ -43,11 +43,22 @@ public class PlayerDailyReward
             if (long.TryParse(PlayerPrefs.GetString(KeySave.TIME_QUIT_GAME), out long lastTime))
             {
                 bool check = TimeHelper.IsNextDay(lastTime, currentTime);
-                if(check)
+                if (check)
                 {
-                    if(dailyRewardData.currentDay < dailyRewardData.dataList.Count)
-                    dailyRewardData.currentDay++;
-                    else Log.Info(LogicCode.FULL_DAY);
+                    if (dailyRewardData.currentDay < dailyRewardData.dataList.Count - 1)
+                    {
+                        dailyRewardData.dataList[dailyRewardData.currentDay].opened = true;
+                        dailyRewardData.currentDay++;
+                    }
+                    else if (dailyRewardData.currentDay == dailyRewardData.dataList.Count - 1)
+                    {
+                        if (dailyRewardData.dataList[dailyRewardData.currentDay].recieved)
+                        {
+                            Reset();
+                        }
+                        else Log.Info(LogicCode.FULL_DAY);
+                    }
+                    else Log.Info(LogicCode.DAILY_REWARD_INVALID);
                 }
                 else
                 {
@@ -83,7 +94,7 @@ public class PlayerDailyReward
 
     public void SetCurrentDay(ref int day)
     {
-        if(day < 0 || day >= dailyRewardData.dataList.Count)
+        if (day < 0 || day >= dailyRewardData.dataList.Count)
         {
             day = 0;
         }
@@ -105,7 +116,7 @@ public class PlayerDailyReward
     }
     private void Reset()
     {
-        for(int i = 0; i < dailyRewardData.dataList.Count; i++)
+        for (int i = 0; i < dailyRewardData.dataList.Count; i++)
         {
             bool opened = i == 0 ? true : false;
             bool recieved = false;

@@ -22,7 +22,6 @@ public class LocalizeCollection : ScriptableObject
         {
             currentLanguageStrings.Add(dataCSV[i][CsvKeyConstant.LOCALIZE_KEY], dataCSV[i][CsvKeyConstant.LOCALIIZE_VALUE]);
         }
-        Debug.Log(GetData()["day"]);
     }
     public LanguageType language;
 

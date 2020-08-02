@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -47,7 +48,8 @@ public class TimeManager : MonoBehaviour
     }
     private void OnApplicationQuit()
     {
-        SaveTime();
+        if (currentTime.TotalSecondTimeStamp() > 1000)
+            PlayerPrefs.SetString(KeySave.TIME_QUIT_GAME, currentTime.TotalSecondTimeStamp().ToString());
     }
     public void SaveTime()
     {
@@ -61,7 +63,6 @@ public class TimeManager : MonoBehaviour
     {
         if (check)
             PlayerPrefs.SetString(KeySave.TIME_QUIT_GAME, PlayerPrefs.GetString(KeySave.TIME_QUIT_GAME));
-        PlayerPrefs.SetString(KeySave.TIME_QUIT_GAME, currentTime.TotalSecondTimeStamp().ToString());
     }
     public IEnumerator getTime(Action<bool, long> callBack = null, Action<bool> callBack2 = null)
     {
@@ -124,6 +125,7 @@ public static class TimeHelper
         DateTime lastTime = lastTimeOnline.NextMidNight();
         long lastTimeSecond = lastTime.TotalSecondTimeStamp();
         long rangeTime = currentTime - lastTimeSecond;
+        Log.Info("last time online: " + lastTimeOnline.ToDate() + ", current time: " + currentTime.ToDate());
         if (rangeTime < 0) return false;
         return true;
     }
@@ -172,7 +174,7 @@ public static class TimeHelper
         var timeSpanConverted = TimeSpan.FromSeconds(timeSpan);
         if (timeSpanConverted.Days > 0)
         {
-            return string.Format("{0} {1} {2}", timeSpanConverted.Days,"day",
+            return string.Format("{0} {1} {2}", timeSpanConverted.Days, "day",
                 timeSpanConverted.ToString(@"hh\:mm\:ss"));
         }
         else

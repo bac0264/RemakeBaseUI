@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class UIMainManager
 {
@@ -13,7 +14,7 @@ public class UIMainManager
 
     }
 
-    public bool Show(ScreenType type)
+    public bool Show(ScreenType type, Action<Transform> otherAnimation = null)
     {
         if (uiMainList.ContainsKey(type.ToString()))
         {
@@ -21,16 +22,17 @@ public class UIMainManager
             if (popup != null)
             {
                 popup.transform.SetAsLastSibling();
+                popup.SetData(otherAnimation);
                 popup.OnShow();
                 return true;
             }
             return false;
 
         }
-        bool check = InitPopup(type);
+        bool check = InitPopup(type, otherAnimation);
         return check;
     }
-    private bool InitPopup(ScreenType type)
+    private bool InitPopup(ScreenType type, Action<Transform> otherAnimation = null)
     {
         // UpdateContainer();
         string path = string.Format(ResourcesConstant.UI_MAIN_PATH, type.ToString());
@@ -41,7 +43,8 @@ public class UIMainManager
         if (popup != null)
         {
             popup.transform.SetAsLastSibling();
-            popup.OnShow();
+            popup.SetData(otherAnimation);
+            popup.OnShow(true);
             return true;
         }
         return false;

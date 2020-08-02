@@ -14,6 +14,8 @@ public class UIDailyRewardView : BaseUIMain
     [SerializeField] private Transform timeViewParents;
     [SerializeField] private TimeView timeView = null;
     [SerializeField] private Button claimBtn = null;
+    [SerializeField] private Button closeBtn = null;
+
     private int currentDay = -1;
     private List<DailyRewardElementData> dataCondition = null;
     private void Awake()
@@ -26,6 +28,7 @@ public class UIDailyRewardView : BaseUIMain
     public void InitButton()
     {
         claimBtn.onClick.AddListener(OnClickClaim);
+        closeBtn.onClick.AddListener(OnHide);
     }
     public void InitData()
     {

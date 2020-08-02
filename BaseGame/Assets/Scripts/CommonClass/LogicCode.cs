@@ -10,4 +10,5 @@ public class LogicCode
     public const string CAN_NOT_GET_TIME = LOGIC_CODE + "1";
     public const string FULL_DAY = LOGIC_CODE + "2";
     public const string NOT_IS_NEXT_DAY = LOGIC_CODE + "3";
+    public const string DAILY_REWARD_INVALID = LOGIC_CODE + "4";
 }
